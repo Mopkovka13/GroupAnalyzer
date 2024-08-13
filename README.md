@@ -1,4 +1,4 @@
-# Shuttle🎇
+# Interview Test🎇
 
 ## Run application
    ```sh

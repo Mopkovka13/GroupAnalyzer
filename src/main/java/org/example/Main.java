@@ -14,7 +14,7 @@ public class Main {
     private static int numberGroupCounter;
 
     public static void main(String[] args) {
-        long startTime = System.currentTimeMillis(); // или System.nanoTime()
+        long startTime = System.currentTimeMillis();
         ///////////////////////////////////////////////////////////////////
         if (args.length == 0) {
             System.out.println("args not found");
@@ -29,13 +29,13 @@ public class Main {
         List<Map.Entry<Integer, Set<String>>> sortedGroups = getSortedGroups();
         writeResult(outputFilename, sortedGroups);
         /////////////////////////////////////////////////////////////////////
-        long endTime = System.currentTimeMillis(); // или System.nanoTime()
+        long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
         System.out.println("Time: " + duration / 1000 + "s");
     }
 
     public static void readFile(String filename) {
-        String regex = "^\"(\\d*)\"(;\"\\d*\")*$";
+        String regex = "^\"(\\d*\\.?\\d*)?\"(;\"(\\d*\\.?\\d*)?\")*$";
         Pattern pattern = Pattern.compile(regex);
 
         try (BufferedReader reader = new BufferedReader(
@@ -71,7 +71,6 @@ public class Main {
         }
     }
 
-    // -1, если нет совпадений и номер группы если есть
     private static int getNumberGroup(String[] parts) {
         for (int i = 0; i < parts.length; i++) {
             if (columns.size() <= i) {

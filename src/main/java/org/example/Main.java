@@ -11,7 +11,7 @@ public class Main {
             = new ArrayList<>();
     private static HashMap<Integer, Set<String>> groups
             = new HashMap<>();
-    private static int numberGroupCounter;
+    private static int numberGroupCounter = 0;
 
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
@@ -43,12 +43,19 @@ public class Main {
             String line;
 
             while ((line = reader.readLine()) != null) {
+
                 if (!pattern.matcher(line).matches()) {
-                    // Если строка некорректна, пропускаем
-                    continue;
+                     // Если строка некорректна, пропускаем
+                     continue;
                 }
 
                 var parts = line.split(";");
+
+                if (parts.length >= columns.size()) {
+                    for (int i = columns.size(); i < parts.length; i++) {
+                        columns.add(new HashMap<>());
+                    }
+                }
 
                 var resultCoincidences = getNumberGroup(parts);
 
@@ -66,6 +73,7 @@ public class Main {
 
                 groups.get(numberGroup).add(line);
             }
+            System.out.println();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -73,18 +81,14 @@ public class Main {
 
     private static int getNumberGroup(String[] parts) {
         for (int i = 0; i < parts.length; i++) {
-            if (columns.size() <= i) {
-                // Если элементов в этом столбце ещё не было, то просто его добавляем
-                columns.add(new HashMap<>());
-            } else {
-                if (parts[i].equals("\"\""))
-                    continue;
 
-                var group = columns.get(i);
+            if (parts[i].equals("\"\""))
+                continue;
 
-                if (group.containsKey(parts[i])) {
-                    return group.get(parts[i]);
-                }
+            var group = columns.get(i);
+
+            if (group.containsKey(parts[i])) {
+                return group.get(parts[i]);
             }
         }
 
